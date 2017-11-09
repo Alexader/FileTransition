@@ -24,11 +24,11 @@ public class FileClient {
 			//发送一个request个服务器
 			InetAddress hostAddress = InetAddress.getByName(hostName);
 			int serverPort = Integer.parseInt(portNum);
-			ClientDatagramSocket mySocket = new ClientDatagramSocket(1000);
-			System.out.println("where do you want to store your file:\n");
-			String savedPath = (br.readLine()).trim();
-			mySocket.sendRequest(hostAddress, serverPort, savedPath);
+			//1000是客户端用来发送数据的端口
+			ClientDatagramSocket mySocket = new ClientDatagramSocket(2450);
+			mySocket.sendRequest(hostAddress, serverPort, fileName);
 			//等待服务器的响应，接受文件
+			//默认文件存储在E:\\saved文件夹中
 			mySocket.receiveFile(hostName, portNum, fileName);
 			mySocket.close();
 		} catch (IOException e) {

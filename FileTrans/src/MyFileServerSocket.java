@@ -21,6 +21,7 @@ public class MyFileServerSocket extends DatagramSocket {
 			fileSender = new DatagramPacket(sendBuffer, len, clientHost, clientPort);
 			this.send(fileSender);
 		}
+		System.out.println("file sending finished");
 		inputFile.close();
 	}
 

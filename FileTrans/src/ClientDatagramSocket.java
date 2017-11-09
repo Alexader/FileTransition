@@ -16,19 +16,21 @@ public class ClientDatagramSocket extends DatagramSocket {
 	ClientDatagramSocket(int portNo) throws SocketException {
 		super(portNo);
 	}
-
-	public void sendRequest(InetAddress receiverHost, int receiverPort, String uri) throws IOException {
+	//@prams 分别是要请求的服务器地址，服务器端口，要发送的请求资源符
+	public void sendRequest(InetAddress receiverHost, int serverPort, String uri) throws IOException {
 		byte[] sendBuffer = uri.getBytes();
-		DatagramPacket datagram = new DatagramPacket(sendBuffer, sendBuffer.length, receiverHost, receiverPort);
+		DatagramPacket datagram = new DatagramPacket(sendBuffer, sendBuffer.length, receiverHost, serverPort);
 		this.send(datagram);
+		//program stops after executing this line and don't have any error 
 	} // end sendMessage
 
 	public void receiveFile(String hostName, String portNum, String fileName) {
 		try {
 			byte[] buffer = new byte[MAX_LEN];
+			String savedPath = "E:\\saved\\" + fileName;
 			//作为接收数据包的缓冲区
 			DatagramPacket filePacket = new DatagramPacket(buffer, MAX_LEN);
-			FileOutputStream outputFile = new FileOutputStream(new File(fileName));
+			FileOutputStream outputFile = new FileOutputStream(new File(savedPath));
 			while(true) {
 				//ClientSocket正在监听本地的端口，receive方法会阻塞，等待数据
 				this.receive(filePacket);
