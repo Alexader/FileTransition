@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -12,8 +13,10 @@ public class MyFileServerSocket extends DatagramSocket {
 		super(portNum);
 	}
 
-	public void sendFile(InetAddress clientHost,  int clientPort, String FilePath) throws IOException {
-		FileInputStream inputFile = new FileInputStream(FilePath);
+	public void sendFile(InetAddress clientHost,  int clientPort, String fileName) throws IOException {
+		//这里不知道为什么不能使用String filePath = "e:\\" + fileName;不然会得到找不到路径
+		String filePath = "e:/" + fileName;
+		FileInputStream inputFile = new FileInputStream(new File(filePath));
 		byte[] sendBuffer = new byte[MAX_LEN];
 		int len;
 		DatagramPacket fileSender = null;

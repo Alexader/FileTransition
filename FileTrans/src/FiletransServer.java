@@ -12,7 +12,7 @@ public class FiletransServer {
 	    	 while(true) {
 				 DatagramMessage request = serverSocket.receiveMessageAndSender();
 				 System.out.println("Request received");			 
-	    		 System.out.println("a client is connected\n file"+request.getUri()+"will be send to client");
+	    		 System.out.println("a client is connected\n file "+request.getUri()+"will be send to client");
 				 serverSocket.sendFile(request.getAddress(), request.getPort(), request.getUri());
 				 serverSocket.close();
 	    	 }

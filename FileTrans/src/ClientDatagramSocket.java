@@ -21,7 +21,6 @@ public class ClientDatagramSocket extends DatagramSocket {
 		byte[] sendBuffer = uri.getBytes();
 		DatagramPacket datagram = new DatagramPacket(sendBuffer, sendBuffer.length, receiverHost, serverPort);
 		this.send(datagram);
-		//program stops after executing this line and don't have any error 
 	} // end sendMessage
 
 	public void receiveFile(String hostName, String portNum, String fileName) {

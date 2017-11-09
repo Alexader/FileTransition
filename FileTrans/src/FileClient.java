@@ -16,7 +16,7 @@ public class FileClient {
 			System.out.println("What is the port number of the server host?");
 			String portNum = (br.readLine()).trim();
 			if (portNum.length() == 0)
-				portNum = "1300";         // default port number
+				portNum = "13";         // default port number
 			System.out.println("what is the file name you want to get:\n");
 			String fileName = (br.readLine()).trim();
 			if(fileName.length()==0)
