@@ -19,8 +19,10 @@ public class FileClient {
 				portNum = "13";         // default port number
 			System.out.println("what is the file name you want to get:\n");
 			String fileName = (br.readLine()).trim();
-			if(fileName.length()==0)
-				fileName = "error.txt";// to inform user there is an error
+			while(fileName.length()==0) {
+				System.out.println("you are not entering anything");
+				fileName = (br.readLine()).trim();
+			}
 			//发送一个request个服务器
 			InetAddress hostAddress = InetAddress.getByName(hostName);
 			int serverPort = Integer.parseInt(portNum);

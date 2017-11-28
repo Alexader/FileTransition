@@ -1,3 +1,4 @@
+import java.io.IOException;
 
 public class FiletransServer {
 	public static void main(String[] args) {
@@ -11,19 +12,22 @@ public class FiletransServer {
 			 System.out.println("server is ready");
 			 System.out.println("waiting for a connection");
 	    	 while(true) {
+	    		 //blocking while waiting for connection
 				 request = serverSocket.receiveMessageAndSender();
 				 System.out.println("Request received");
+				 System.out.println(request.getUri());
 				 if(request.getUri()==null)
-					 System.out.println("you have not choose a file");
+					 System.out.println("you have not choosen a file");
 				 if(request.getUri()=="q") break;
-	    		 System.out.println("a client is connected\n file "+request.getUri()+"will be send to client");
+	    		 System.out.println("a client is connected\n file "+request.getUri()+" will be send to client");
 				 serverSocket.sendFile(request.getAddress(), request.getPort(), request.getUri());
 	    	 }
 	    	 System.out.println("server exit");
 	    	 serverSocket.close();
 	    } // end try
-		catch (Exception ex) {
-	       System.out.println("There is a problem: " + ex);
+		catch (IOException ex) {
+	       System.out.println("yuur uri is wrong, enter again");
+	       ex.printStackTrace();
 		} // end catch
 	  } //end main
 }

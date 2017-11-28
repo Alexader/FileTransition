@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.net.DatagramPacket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeoutException;
 
 public class ClientDatagramSocket extends DatagramSocket {
 	static final int MAX_LEN = 1024;
@@ -18,7 +17,7 @@ public class ClientDatagramSocket extends DatagramSocket {
 	ClientDatagramSocket(int portNo) throws SocketException {
 		super(portNo);
 	}
-	//@prams 分别是要请求的服务器地址，服务器端口，要发送的请求资源符
+	//@parameters 分别是要请求的服务器地址，服务器端口，要发送的请求资源符
 	public void sendRequest(InetAddress receiverHost, int serverPort, String uri) throws IOException {
 		byte[] sendBuffer = uri.getBytes();
 		DatagramPacket datagram = new DatagramPacket(sendBuffer, sendBuffer.length, receiverHost, serverPort);
@@ -35,19 +34,22 @@ public class ClientDatagramSocket extends DatagramSocket {
 			while(true) {
 				//ClientSocket正在监听本地的端口，receive方法会阻塞，等待数据
 				try {
-				this.setSoTimeout(2000);
+				this.setSoTimeout(200000);
 				this.receive(filePacket);
 				byte[] data = filePacket.getData();
 				outputFile.write(buffer, 0, filePacket.getLength());
 				//缓冲区的大小比实际接收的的数据要小，说明接受结束
-				if(data.length>filePacket.getLength()) break;
+				if(data.length>filePacket.getLength()) {
+					System.out.println("finished receiving file and store at E:\\saved");
+					break;
+				}
 				} catch(SocketTimeoutException timeout) {
 					System.out.println("receive timeout");
 					break;
 				}
 			}
 			outputFile.close();
-			System.out.println("finished receiving file and store at E:\\saved");
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();
