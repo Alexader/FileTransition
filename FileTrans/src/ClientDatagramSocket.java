@@ -34,7 +34,7 @@ public class ClientDatagramSocket extends DatagramSocket {
 			while(true) {
 				//ClientSocket正在监听本地的端口，receive方法会阻塞，等待数据
 				try {
-				this.setSoTimeout(200000);
+				this.setSoTimeout(20000);
 				this.receive(filePacket);
 				byte[] data = filePacket.getData();
 				outputFile.write(buffer, 0, filePacket.getLength());
