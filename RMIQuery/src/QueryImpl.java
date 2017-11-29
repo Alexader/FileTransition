@@ -20,6 +20,7 @@ public class QueryImpl extends UnicastRemoteObject implements QueryInterface {
 	//constructor can't be left out, because RemoteException have to be thrown by constructor
     public QueryImpl() throws RemoteException {
         super();
+        //dSource is used to manage connection pool
         dSource = ConnectionMysql.getMysqlSource();
     }
 
@@ -28,13 +29,13 @@ public class QueryImpl extends UnicastRemoteObject implements QueryInterface {
         try {
         	connection = dSource.getConnection();
         	System.out.print("connection database done");
+        	//prepareStatement is sql injection proof
         	statement = connection.prepareStatement("select age from student where name=?");
         	statement.setString(1, name);
 			ResultSet rSet = statement.executeQuery();
 			rSet.next();
 			int age = rSet.getInt(1);
 			System.out.println("query done");
-			connection.close();
 			return age;
         } catch(Exception io) {
             System.out.println("can't open database");
@@ -52,7 +53,6 @@ public class QueryImpl extends UnicastRemoteObject implements QueryInterface {
             rSet.next();
             float grade = rSet.getFloat(1);
             System.out.println("query done");
-            connection.close();
             return grade;
         } catch(Exception io) {
             System.out.println("can't open database");
@@ -69,7 +69,6 @@ public class QueryImpl extends UnicastRemoteObject implements QueryInterface {
             rSet.next();
             String sex = rSet.getString(1);
             System.out.println("query done");
-            connection.close();
             return sex;
         } catch(Exception io) {
             System.out.println("can't open database");

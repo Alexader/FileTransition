@@ -27,10 +27,14 @@ public class QueryClient {
             String queryUser;
             String name;
             String prompt;
+            //quit until user type in 'q'
             while(true) {
             	System.out.println("teacher or student info you want to "
             			+ "query:? or you can type 'q' to quit\n");
-            	if((prompt=(br.readLine()).trim()).equals("q")) break;
+            	if((prompt=(br.readLine()).trim()).equals("q")) {
+            		System.out.println("bye, program is quiting");
+            		break;
+            	}
             	else if(prompt!=null) {
             		queryUser = prompt;
             		System.out.println("what is the name:?\n");
@@ -50,11 +54,10 @@ public class QueryClient {
 		            }
             	}
             }
-            
-            
          } // end try
          catch (Exception e) {
-            System.out.println("Exception in HelloClient: " + e);
+            System.out.println("Exception in HelloClient: ");
+            e.printStackTrace();
          }
     }
 }
