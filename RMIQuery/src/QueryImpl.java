@@ -1,8 +1,11 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.rmi.*;
 import java.rmi.server.*;
+import java.sql.*;
+
+import javax.sql.DataSource;
+
+//import com.mysql.jdbc.Connection;
+//import com.mysql.jdbc.Statement;
 
 /**
  * This class implements the remote interface 
@@ -10,47 +13,82 @@ import java.rmi.server.*;
  */
 
 public class QueryImpl extends UnicastRemoteObject implements QueryInterface {
+	static Connection connection = null;
+	static PreparedStatement statement = null;
+	static DataSource dSource = null;
     //远程对象方法的具体实现
 	//constructor can't be left out, because RemoteException have to be thrown by constructor
     public QueryImpl() throws RemoteException {
         super();
+        dSource = ConnectionMysql.getMysqlSource();
     }
 
-    public int queryAge(String name) throws RemoteException {
+    public int queryStudentAge(String name) throws RemoteException {
         // something like to query a database
-        String age;
-        BufferedReader bf = null;
         try {
-        	// you have to got a index.txt record with a number in it in your computer
-            FileReader fileReader = new FileReader("E:\\uri\\index.txt");
-            bf = new BufferedReader(fileReader);
-            if((age=bf.readLine())!=null) {
-                bf.close();
-                return Integer.parseInt(age);
-            }
-            else {
-            	bf.close();
-            	return -1;
-            }  
-        } catch(IOException io) {
-            System.out.println("can't open file or read file");
+        	connection = dSource.getConnection();
+        	System.out.print("connection database done");
+        	statement = connection.prepareStatement("select age from student where name=?");
+        	statement.setString(1, name);
+			ResultSet rSet = statement.executeQuery();
+			rSet.next();
+			int age = rSet.getInt(1);
+			System.out.println("query done");
+			connection.close();
+			return age;
+        } catch(Exception io) {
+            System.out.println("can't open database");
             return -1;
         }
     }
-    public float queryGrade(String name) throws RemoteException{
+    public float queryStudentGrade(String name) throws RemoteException{
         //query database alike
-    	BufferedReader bf;
-    	String grade;
         try {
-            FileReader fileReader = new FileReader("E:\\uri\\index.txt");
-            bf = new BufferedReader(fileReader);
-            if((grade=bf.readLine())!=null) {
-                return Float.parseFloat(grade);
-            }
-            else return -1;
-            
-        } catch(IOException io) {
-            System.out.println("can't open file or read file");
+        	connection = dSource.getConnection();
+			System.out.println("connecting database done");
+            statement = connection.prepareStatement("select grade from student where name=?");
+            statement.setString(1, name);
+            ResultSet rSet = statement.executeQuery();
+            rSet.next();
+            float grade = rSet.getFloat(1);
+            System.out.println("query done");
+            connection.close();
+            return grade;
+        } catch(Exception io) {
+            System.out.println("can't open database");
+            return -1;
+        }
+    }
+    public String queryTeacherSex(String name) {
+    	try {
+        	connection = dSource.getConnection();
+			System.out.println("connecting database done");
+            statement = connection.prepareStatement("select sex from teacher where name=?");
+            statement.setString(1, name);
+            ResultSet rSet = statement.executeQuery();
+            rSet.next();
+            String sex = rSet.getString(1);
+            System.out.println("query done");
+            connection.close();
+            return sex;
+        } catch(Exception io) {
+            System.out.println("can't open database");
+            return "-1";
+        }
+    }
+    public int queryTeacherAge(String name) {
+    	try {
+        	connection = dSource.getConnection();
+			System.out.println("connecting database done");
+            statement = connection.prepareStatement("select age from teacher where name=?");
+            statement.setString(1, name);
+            ResultSet rSet = statement.executeQuery();
+            rSet.next();
+            int age = rSet.getInt(1);
+            System.out.println("query done");
+            return age;
+        } catch(Exception io) {
+            System.out.println("can't open database");
             return -1;
         }
     }

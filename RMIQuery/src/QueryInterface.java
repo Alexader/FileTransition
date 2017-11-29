@@ -12,7 +12,9 @@ public interface QueryInterface extends Remote {
     * 所有的远程调用的方法,必须声明throws RemoteException
     * 从client调用此处的接口
     * */
-    public int queryAge(String name) throws RemoteException;
-    public float queryGrade(String name) throws RemoteException;
+    public int queryStudentAge(String name) throws RemoteException;
+    public int queryTeacherAge(String name) throws RemoteException;
+    public String queryTeacherSex(String name) throws RemoteException;
+    public float queryStudentGrade(String name) throws RemoteException;
 
 } //end interface
